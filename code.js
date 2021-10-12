@@ -1,8 +1,8 @@
 // Your code here
 const isNumber = input => typeof input === 'number' //makes sure the input is a number
-const successArray = []
+const successArray = [] //array of words to be be written
 
-const onesDigitString = (input) => {
+const onesDigitString = (input) => { //the last digit regardless of length
     if(input === '1') {
         successArray.push('one')
     } else if(input === '2') {
@@ -24,15 +24,47 @@ const onesDigitString = (input) => {
     }
 }
 
-const tensDigitString = (input) => {
-    if(input === '1') {
-        successArray.push('ten')
+const tensDigitString = (input) => { //the second to last digit
+    if(input === '2') {
+        successArray.push('twenty')
+    } else if(input === '3') {
+        successArray.push('thirty')
+    } else if(input === '4') {
+        successArray.push('fourty')
+    } else if(input === '5') {
+        successArray.push('fifty')
+    } else if(input === '6') {
+        successArray.push('sixty')
+    } else if(input === '7') {
+        successArray.push('seventy')
+    } else if(input === '8') {
+        successArray.push('eighty')
+    } else if(input === '9') {
+        successArray.push('ninety')
     }
 }
 
-const teensString = (input) => {
+const teensString = (input) => { //if it's between 9 and 20, it does it's own logic
     if(input === 10) {
-        
+        successArray.push('ten')
+    } else if(input === 11) {
+        successArray.push('eleven')
+    } else if(input === 12) {
+        successArray.push('twelve')
+    } else if(input === 13) {
+        successArray.push('thirteen')
+    } else if(input === 14) {
+        successArray.push('fourteen')
+    } else if(input === 15) {
+        successArray.push('fifteen')
+    } else if(input === 16) {
+        successArray.push('sixteen')
+    } else if(input === 17) {
+        successArray.push('seventeen')
+    } else if(input === 18) {
+        successArray.push('eighteen')
+    } else if(input === 19) {
+        successArray.push('nineteen')
     }
 }
 
@@ -41,24 +73,23 @@ const numbersToWords = (input) => {
         return null
     }
 
-    if(input < 20 && input > 9) {
-
+    if(input < 20 && input > 9) { //if it's ten to nineteen, completely different logic is rendered
+        teensString(input)
+        return successArray
     }
-    let strNum = JSON.stringify(input) //turns the number into a string
-    let digitArray = strNum.split('') //splits the string into an array
-    //the conditionals for how many digits
     
-    let numArr = JSON.stringify(input).split('').map((num) => {
+    let numArr = JSON.stringify(input).split('').map((num) => { //a number can't be split so it need to be stringified and then turned back into a number
         return parseInt(num)
     })
     console.log(numArr)
-    if(digitArray.length === 1) {
-        onesDigitString(digitArray[0])
-    } else if(digitArray.length === 2) {
-        if(parseInt(digitArray.join('')) > 20) {
-
-        }
-    } else if(digitArray.length === 3) {
-
+    if(numArr.length === 1) {
+        onesDigitString(JSON.stringify(numArr[0]))
+    } else if(numArr.length === 2) { //needs to call tens and ones
+        tensDigitString(JSON.stringify(numArr[0]))
+        onesDigitString(JSON.stringify(numArr[1]))
+    } else if(numArr.length === 3) { //the basic challenge only goes up to 100
+        successArray.push('one-hundred')
     }
+
+    return successArray.join('-') //joins the worded numbers with a dash
 }
