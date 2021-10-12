@@ -1,6 +1,7 @@
 // Your code here
 const isNumber = input => typeof input === 'number' //makes sure the input is a number
-const successArray = [] //array of words to be be written
+let successArray = [] //array of words to be be written, needs to be let so it can be deleted every time it's called
+const output = document.createElement('p')
 
 const onesDigitString = (input) => { //the last digit regardless of length
     if(input === '1') {
@@ -68,22 +69,27 @@ const teensString = (input) => { //if it's between 9 and 20, it does it's own lo
     }
 }
 
-const numbersToWords = (input) => {
+const numbersToWords = (input) => { //the main function that the input gets passed into
     if(!isNumber(input)) { //returns null is input is not a number
         return null
     }
 
+    successArray = []
+
     if(input < 20 && input > 9) { //if it's ten to nineteen, completely different logic is rendered
         teensString(input)
-        return successArray
+        return successArray[0]
     }
     
     let numArr = JSON.stringify(input).split('').map((num) => { //a number can't be split so it need to be stringified and then turned back into a number
         return parseInt(num)
     })
-    console.log(numArr)
     if(numArr.length === 1) {
-        onesDigitString(JSON.stringify(numArr[0]))
+        if(numArr[0] === 0) { //zero would only be added once
+            successArray.push('zero')
+        } else {
+            onesDigitString(JSON.stringify(numArr[0]))
+        }
     } else if(numArr.length === 2) { //needs to call tens and ones
         tensDigitString(JSON.stringify(numArr[0]))
         onesDigitString(JSON.stringify(numArr[1]))
@@ -93,3 +99,12 @@ const numbersToWords = (input) => {
 
     return successArray.join('-') //joins the worded numbers with a dash
 }
+
+const outputArr = []; //creating an array to put the results so they can be joined 
+for(let i = 0; i <= 100; i++) {
+    outputArr.push(numbersToWords(i))
+}
+
+output.append(outputArr.join(', '))
+
+document.body.append(output)
